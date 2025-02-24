@@ -1,9 +1,7 @@
-FROM nextcloud:30-apache
+FROM nextcloud:30.0.5-apache
 
-# replaced smbclient because of errors on files >512MB
-# RUN apt-get update && apt-get install -y procps smbclient && rm -rf /var/lib/apt/lists/*
-
-# stolen from https://github.com/icsy7867/nextcloud/blob/master/nextcould-23/Dockerfile
+# https://github.com/nextcloud/docker/blob/4daafc8d2092b4187311a2a62d38eca37d58616f/.examples/README.md?plain=1#L47
 RUN apt-get update && apt-get install -y smbclient libsmbclient-dev
 RUN pecl install smbclient
+RUN docker-php-ext-enable smbclient
 RUN echo "extension=smbclient.so" >> /usr/local/etc/php/conf.d/nextcloud.ini
